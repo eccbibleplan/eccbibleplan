@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import clsx from 'clsx';
-import EditAnnouncement from "./EditAnnouncement";
-import DeleteAnnouncement from "./DeleteAnnouncement";
+import EditTask from "./EditTask";
+import DeleteTask from "./DeleteTask";
 // Redux
 import { connect } from "react-redux";
 // MUI
@@ -18,13 +18,14 @@ import Typography from "@material-ui/core/Typography";
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 // Icons
-import ArchiveAnnouncement from "./ArchiveAnnouncement";
+import ArchiveButton from "./ArchiveButton";
 import ReactMarkdown from "react-markdown";
 import {markdownTextPreProcess} from "../../util/markdown_utils";
 import CardContent from "@material-ui/core/CardContent";
 import ShareButton from "./ShareButton";
-import AnnouncementDialog from "./AnnouncementDialog";
-import PinAnnouncement from "./PinAnnouncement";
+import TaskDialog from "./TaskDialog";
+import PinAnnouncement from "./PinTask";
+import CompleteButton from "./CompleteButton";
 
 const styles = (theme) => ({
     card: {
@@ -58,18 +59,18 @@ const styles = (theme) => ({
     }
 });
 
-class Announcement extends Component {
+class Task extends Component {
     render() {
         dayjs.extend(relativeTime);
 
         const {
             classes,
-            announcement: {
+            task: {
                 body,
                 createdAt,
                 userImage,
                 userHandle,
-                announcementId,
+                taskId,
                 pinToTop
             },
             user: {
@@ -80,21 +81,22 @@ class Announcement extends Component {
         } = this.props;
 
         const deleteButton = authenticated && userHandle === handle ? (
-            <DeleteAnnouncement announcementId={announcementId}/>
+            <DeleteTask taskId={taskId}/>
         ) : null;
         const editButton = authenticated && userHandle === handle ? (
-            <EditAnnouncement
-                announcementId={announcementId}
+            <EditTask
+                taskId={taskId}
                 userHandle={userHandle}
             />
         ) : null;
         const archiveButton = authenticated && userHandle === handle ? (
-            <ArchiveAnnouncement announcementId={announcementId} userHandle={userHandle} />
+            <ArchiveButton taskId={taskId} userHandle={userHandle} />
         ) : null;
         const pinButton = authenticated && userHandle === handle ? (
-            <PinAnnouncement announcementId={announcementId} pinToTop={pinToTop} />
+            <PinAnnouncement taskId={taskId} pinToTop={pinToTop} />
         ) : null;
-        const shareButton = <ShareButton announcementId={announcementId} content={body}/>;
+        const shareButton = <ShareButton taskId={taskId} content={body}/>;
+        const completeButton = <CompleteButton taskId={taskId} user={this.props.user}/>;
         const actionsMarkup = (
             <ButtonGroup classes={classes.buttonGroup}>
                 {shareButton}
@@ -102,6 +104,7 @@ class Announcement extends Component {
                 {pinButton}
                 {archiveButton}
                 {deleteButton}
+                {completeButton}
             </ButtonGroup>
         );
         const userLink = (<Typography
@@ -130,7 +133,7 @@ class Announcement extends Component {
 
                     <CardContent className={classes.content}>
                         <Typography
-                            id={"content-" + announcementId}
+                            id={"content-" + taskId}
                         >
                             <ReactMarkdown
                                 source={markdownTextPreProcess(body)}
@@ -142,15 +145,15 @@ class Announcement extends Component {
                 <CardActions className={classes.actions}>
                     {actionsMarkup}
                 </CardActions>
-                <AnnouncementDialog announcementId={announcementId} openDialog={openDialog}/>
+                <TaskDialog taskId={taskId} openDialog={openDialog}/>
             </Card>
         )
     }
 }
 
-Announcement.propTypes = {
+Task.propTypes = {
     user: PropTypes.object.isRequired,
-    announcement: PropTypes.object.isRequired,
+    task: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     openDialog: PropTypes.bool
 };
@@ -158,4 +161,4 @@ Announcement.propTypes = {
 const mapStateToProps = state => ({
     user: state.user
 });
-export default connect(mapStateToProps)(withStyles(styles)(Announcement));
+export default connect(mapStateToProps)(withStyles(styles)(Task));

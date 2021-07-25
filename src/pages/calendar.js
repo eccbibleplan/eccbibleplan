@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
-import { getAnnouncements } from "../redux/actions/dataActions";
+import { getTasks } from "../redux/actions/dataActions";
 
 import Calendar from '../components/calendar/Calendar';
 
@@ -23,4 +23,4 @@ const mapStateToProps = (state) => ({
     data: state.data
 });
 
-export default connect(mapStateToProps, { getAnnouncements })(calendar)
+export default connect(mapStateToProps, { getAnnouncements: getTasks })(calendar)

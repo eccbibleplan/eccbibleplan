@@ -18,7 +18,7 @@ import TextField from "@material-ui/core/TextField/TextField";
 import Button from "@material-ui/core/Button";
 
 // Redux
-import {getAnnouncement, updateAnnouncement, clearErrors, uploadImageForPost} from "../../redux/actions/dataActions";
+import {getTask, updateTask, clearErrors, uploadImageForPost} from "../../redux/actions/dataActions";
 
 const styles = (theme) => ({
     ...theme.rootStyles,
@@ -49,7 +49,7 @@ const styles = (theme) => ({
     },
 });
 
-class EditAnnouncement extends Component {
+class EditTask extends Component {
     state = {
         open: false,
         oldPath: "",
@@ -69,8 +69,8 @@ class EditAnnouncement extends Component {
                 errors: nextProps.UI.errors
             })
         }
-        if (nextProps.announcement.body) {
-            this.setState({ body: nextProps.announcement.body })
+        if (nextProps.task.body) {
+            this.setState({ body: nextProps.task.body })
         }
     }
 
@@ -82,8 +82,8 @@ class EditAnnouncement extends Component {
 
     handleOpen = () => {
         let oldPath = window.location.pathname;
-        const { userHandle, announcementId } = this.props;
-        const newPath = `/users/${userHandle}/announcement/${announcementId}`;
+        const { userHandle, taskId } = this.props;
+        const newPath = `/users/${userHandle}/task/${taskId}`;
 
         if (oldPath === newPath) {
             oldPath = `/users/${userHandle}`;
@@ -91,7 +91,7 @@ class EditAnnouncement extends Component {
         window.history.pushState(null, null, newPath);
 
         this.setState({ open: true, oldPath, newPath });
-        this.props.getAnnouncement(this.props.announcementId);
+        this.props.getTask(this.props.taskId);
     };
 
     handleClose = () => {
@@ -102,7 +102,7 @@ class EditAnnouncement extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.props.updateAnnouncement(this.props.announcementId, this.state.body);
+        this.props.updateTask(this.props.taskId, this.state.body);
     };
 
     handleChange = (event) => {
@@ -115,7 +115,7 @@ class EditAnnouncement extends Component {
         const image = event.target.files[0];
         const formData = new FormData();
         formData.append("image", image, image.name);
-        this.props.uploadImageForPost(this.props.announcementId, formData);
+        this.props.uploadImageForPost(this.props.taskId, formData);
     };
 
     handleEditPicture = () => {
@@ -142,7 +142,7 @@ class EditAnnouncement extends Component {
                     type="text"
                     label="Content"
                     multiline
-                    placeholder="Announcement content with markdown"
+                    placeholder="Task content with markdown"
                     error={!!errors.body}
                     helperText={errors.body}
                     className={classes.textField}
@@ -187,7 +187,7 @@ class EditAnnouncement extends Component {
         );
         return (
             <Fragment>
-                <MyButton onClick={this.handleOpen} tip="Edit announcement" tipClassName={classes.expandButton}>
+                <MyButton onClick={this.handleOpen} tip="Edit task" tipClassName={classes.expandButton}>
                     <EditIcon color="primary" />
                 </MyButton>
                 <Dialog
@@ -207,19 +207,19 @@ class EditAnnouncement extends Component {
     }
 }
 
-EditAnnouncement.propTypes = {
-    getAnnouncement: PropTypes.func.isRequired,
+EditTask.propTypes = {
+    getTask: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired,
-    announcementId: PropTypes.string.isRequired,
+    taskId: PropTypes.string.isRequired,
     userHandle: PropTypes.string.isRequired,
-    announcement: PropTypes.object.isRequired,
+    task: PropTypes.object.isRequired,
     UI: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    announcement: state.data.announcement,
+    task: state.data.task,
     UI: state.UI
 });
 
 export default connect(mapStateToProps, {
-    getAnnouncement, updateAnnouncement, uploadImageForPost, clearErrors })(withStyles(styles)(EditAnnouncement));
+    getTask: getTask, updateTask: updateTask, uploadImageForPost, clearErrors })(withStyles(styles)(EditTask));

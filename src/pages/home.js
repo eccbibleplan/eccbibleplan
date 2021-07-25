@@ -1,47 +1,77 @@
-import React, { Component } from 'react'
-import Announcement from '../components/announcement/Announcement';
+import React, {Component, Fragment} from 'react'
+import Task from '../components/announcement/Task';
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";
-import { getAnnouncements } from "../redux/actions/dataActions";
-import AnnouncementSkeleton from "../util/AnnouncementSkeleton";
+import { getTasks } from "../redux/actions/dataActions";
+import TaskSkeleton from "../util/TaskSkeleton";
+import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 const queryString = require('query-string');
 
 class home extends Component {
     state = {
-        announcementId: null
+        taskId: null,
+        showCompleted: false
     };
 
+    taskCompleted(taskId) {
+        return !!(
+            this.props.user.taskCompletions &&
+            this.props.user.taskCompletions.find(t => t.taskId === taskId)
+        );
+    }
+
     componentDidMount() {
-        this.props.getAnnouncements();
+        this.props.getTasks();
         const queryParams = queryString.parse(this.props.location.search);
-        const announcementId = queryParams.announcementId;
-        if (announcementId) {
-            this.setState({ announcementId: announcementId})
+        const taskId = queryParams.taskId;
+        if (taskId) {
+            this.setState({ taskId: taskId})
         }
     }
 
+    onShowCompletedChange = (event) => {
+        this.setState({[event.target.name]: event.target.checked });
+    }
+
     render() {
-        const { announcementId } = this.state;
-        const { announcements, loading } = this.props.data;
+        const { taskId, showCompleted } = this.state;
+        const { tasks, loading } = this.props.data;
         return !loading ? (
-            announcements
-                .filter(ann => !ann.isArchived)
-                .map(ann => announcementId && ann.announcementId === announcementId ?
-                    (<Announcement key={ann.announcementId} announcement={ann} openDialog={true}/>) :
-                    (<Announcement key={ann.announcementId} announcement={ann}/>)
-                )
-        ) : <AnnouncementSkeleton />;
+            <Fragment>
+                <FormGroup row>
+                    <FormControlLabel
+                        control={<Checkbox
+                            checked={showCompleted}
+                            onChange={this.onShowCompletedChange}
+                            name="showCompleted" />}
+                        label="Show Completed Tasks"
+                    />
+                </FormGroup>
+                {
+                    tasks
+                        .filter(t => !t.isArchived && (showCompleted || !this.taskCompleted(t.taskId)))
+                        .map(t => taskId && t.taskId === taskId ?
+                            (<Task key={t.taskId} task={t} openDialog={true}/>) :
+                            (<Task key={t.taskId} task={t}/>))
+                }
+            </Fragment>
+            ) : <TaskSkeleton />;
     }
 }
 
 home.propTypes = {
-    getAnnouncements: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired
+    getTasks: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired,
+    user: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    data: state.data
+    data: state.data,
+    user: state.user
 });
 
-export default connect(mapStateToProps, { getAnnouncements })(home)
+export default connect(mapStateToProps, { getTasks: getTasks })(home)

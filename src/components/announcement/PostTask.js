@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import { connect } from "react-redux";
 import withStyles from '@material-ui/core/styles/withStyles';
-import {clearErrors, postAnnouncement} from "../../redux/actions/dataActions";
+import {clearErrors, postTask} from "../../redux/actions/dataActions";
 import PropTypes from "prop-types";
 
 // MUI
@@ -29,7 +29,7 @@ const styles = (theme) => ({
     }
 });
 
-class PostAnnouncement extends Component {
+class PostTask extends Component {
     state = {
         open: false,
         body: "",
@@ -69,7 +69,7 @@ class PostAnnouncement extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.props.postAnnouncement({body: this.state.body});
+        this.props.postTask({body: this.state.body});
     };
 
     render() {
@@ -80,7 +80,7 @@ class PostAnnouncement extends Component {
             <Fragment>
                 <MyButton
                     onClick={this.handleOpen}
-                    tip="Post an Announcement!">
+                    tip="Post an Task!">
                     <AddIcon/>
                 </MyButton>
                 <Dialog
@@ -92,7 +92,7 @@ class PostAnnouncement extends Component {
                         <CloseIcon/>
                     </MyButton>
                     <DialogTitle>
-                        Post a new announcement
+                        Post a new task
                     </DialogTitle>
                     <DialogContent>
                         <form onSubmit={this.handleSubmit}>
@@ -101,7 +101,7 @@ class PostAnnouncement extends Component {
                                 type="text"
                                 label="Content"
                                 multiline
-                                placeholder="Announcement content with markdown"
+                                placeholder="Task content with markdown"
                                 error={!!errors.body}
                                 helperText={errors.body}
                                 className={classes.textField}
@@ -131,8 +131,8 @@ class PostAnnouncement extends Component {
     }
 }
 
-PostAnnouncement.propTypes = {
-    postAnnouncement: PropTypes.func.isRequired,
+PostTask.propTypes = {
+    postTask: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired
 };
@@ -141,4 +141,4 @@ const mapStateToProps = (state) => ({
     UI: state.UI
 });
 
-export default connect(mapStateToProps, { postAnnouncement, clearErrors })(withStyles(styles)(PostAnnouncement));
+export default connect(mapStateToProps, { postTask: postTask, clearErrors })(withStyles(styles)(PostTask));

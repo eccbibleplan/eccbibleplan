@@ -3,8 +3,8 @@ import {
     LOADING_USER,
     SET_AUTHENTICATED,
     SET_UNAUTHENTICATED,
-    LIKE_ANNOUNCEMENT,
-    UNLIKE_ANNOUNCEMENT,
+    COMPLETE_TASK,
+    UNDO_COMPLETE_TASK,
     MARK_NOTIFCATIONS_READ
 } from "../types";
 
@@ -36,21 +36,21 @@ const userReducers = function(state = initialState, action) {
                 ...state,
                 loading: true
             };
-        case LIKE_ANNOUNCEMENT:
+        case COMPLETE_TASK:
             return {
                 ...state,
-                likes: [
-                    ...state.likes,
+                taskCompletions: [
+                    ...state.taskCompletions,
                     {
                         userHandle: state.credentials.handle,
-                        announcementId: action.payload.announcementId
+                        taskId: action.payload.taskId
                     }
                 ]
             };
-        case UNLIKE_ANNOUNCEMENT:
+        case UNDO_COMPLETE_TASK:
             return {
                 ...state,
-                likes: state.likes.filter(like => like.announcementId !== action.payload.announcementId)
+                taskCompletions: state.taskCompletions.filter(t => t.taskId !== action.payload.taskId)
             };
         case MARK_NOTIFCATIONS_READ:
             state.notifications.forEach(n => n.read = true);

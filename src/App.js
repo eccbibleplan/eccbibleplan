@@ -29,7 +29,13 @@ import { setAuthorizationHeader } from "./util/auth";
 const theme = createMuiTheme(themeFile);
 
 // // Initialize Firebase
-firebase.initializeApp({apiKey: "AIzaSyCCx9TDJtVzEaPym1OyU5KSuWgwslGDzEY"});
+// firebase.initializeApp({apiKey: "AIzaSyCCx9TDJtVzEaPym1OyU5KSuWgwslGDzEY"});
+if (!firebase.apps.length) {
+    firebase.initializeApp({apiKey: "AIzaSyCCx9TDJtVzEaPym1OyU5KSuWgwslGDzEY"});
+    // firebase.initializeApp({});
+}else {
+    firebase.app(); // if already initialized, use that one
+}
 
 firebase.auth().onAuthStateChanged(usr => {
     if (usr) {
@@ -40,8 +46,7 @@ firebase.auth().onAuthStateChanged(usr => {
     }
 });
 
-axios.defaults.baseURL = "https://us-central1-h2-app.cloudfunctions.net/api";
-// axios.defaults.baseURL = "http://localhost:5000/h2-app/us-central1/api";
+axios.defaults.baseURL = process.env.REACT_APP_API_URL
 
 function App() {
   return (

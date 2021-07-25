@@ -1,14 +1,14 @@
 import {
-    SET_ANNOUNCEMENTS,
+    SET_TASKS,
     LOADING_DATA,
-    LIKE_ANNOUNCEMENT,
-    UNLIKE_ANNOUNCEMENT,
-    DELETE_ANNOUNCEMENT,
+    COMPLETE_TASK,
+    UNDO_COMPLETE_TASK,
+    DELETE_TASK,
     CLEAR_ERRORS,
     SET_ERRORS,
     LOADING_UI,
-    POST_ANNOUNCEMENT,
-    SET_ANNOUNCEMENT,
+    POST_TASK,
+    SET_TASK,
     STOP_LOADING_UI,
     SUBMIT_COMMENT,
     LOADING_USER,
@@ -16,31 +16,31 @@ import {
 } from "../types";
 import axios from 'axios';
 
-export const getAnnouncements = () => dispatch => {
+export const getTasks = () => dispatch => {
     dispatch({ type: LOADING_DATA });
-    axios.get("/announcements")
+    axios.get("/tasks")
         .then(res => {
             dispatch({
-                type: SET_ANNOUNCEMENTS,
-                payload: res.data.map(s => ({...s, announcementId: s.announcementId}))
+                type: SET_TASKS,
+                payload: res.data.map(s => ({...s, taskId: s.taskId}))
             })
         })
         .catch(err => {
             dispatch({
-                type: SET_ANNOUNCEMENTS,
+                type: SET_TASKS,
                 payload: []
             })
 
         })
 };
 
-export const getAnnouncement = (announcementId) => dispatch => {
+export const getTask = (taskId) => dispatch => {
     dispatch({ type: LOADING_UI });
-    axios.get(`/announcement/${announcementId}`)
+    axios.get(`/task/${taskId}`)
         .then(res => {
             dispatch({
-                type: SET_ANNOUNCEMENT,
-                payload: {...res.data, announcementId: res.data.announcementId}
+                type: SET_TASK,
+                payload: {...res.data, taskId: res.data.taskId}
             });
             dispatch({
                 type: STOP_LOADING_UI
@@ -51,13 +51,13 @@ export const getAnnouncement = (announcementId) => dispatch => {
         })
 };
 
-export const postAnnouncement = (newAnnouncement) => dispatch => {
+export const postTask = (newTask) => dispatch => {
     dispatch({ type: LOADING_UI });
-    axios.post("/announcement", newAnnouncement)
+    axios.post("/task", newTask)
         .then(res => {
             dispatch({
-                type: POST_ANNOUNCEMENT,
-                payload: {...res.data, announcementId: res.data.announcementId}
+                type: POST_TASK,
+                payload: {...res.data, taskId: res.data.taskId}
             });
             dispatch(clearErrors())
         })
@@ -69,11 +69,11 @@ export const postAnnouncement = (newAnnouncement) => dispatch => {
         })
 };
 
-export const updateAnnouncement = (announcementId, body) => dispatch => {
+export const updateTask = (taskId, body) => dispatch => {
     dispatch({ type: LOADING_UI });
-    axios.post(`/announcement/${announcementId}`, { body: body })
+    axios.post(`/task/${taskId}`, { body: body })
         .then(() => {
-            dispatch(getAnnouncements());
+            dispatch(getTasks());
         })
         .catch(err => {
             dispatch({
@@ -83,42 +83,42 @@ export const updateAnnouncement = (announcementId, body) => dispatch => {
         })
 };
 
-export const likeAnnouncement = (announcementId) => dispatch => {
-    axios.get(`/announcement/${announcementId}/like`)
+export const completeTask = (taskId) => dispatch => {
+    axios.get(`/task/${taskId}/complete`)
         .then(res => {
             dispatch({
-                type: LIKE_ANNOUNCEMENT,
-                payload: {...res.data, announcementId: res.data.announcementId}
+                type: COMPLETE_TASK,
+                payload: {...res.data, taskId: taskId}
             })
         })
         .catch(err => console.log(err))
 };
 
-export const unlikeAnnouncement = (announcementId) => dispatch => {
-    axios.get(`/announcement/${announcementId}/unlike`)
+export const undoCompleteTask = (taskId) => dispatch => {
+    axios.get(`/task/${taskId}/undo_complete`)
         .then(res => {
             dispatch({
-                type: UNLIKE_ANNOUNCEMENT,
-                payload: {...res.data, announcementId: res.data.announcementId}
+                type: UNDO_COMPLETE_TASK,
+                payload: {...res.data, taskId: taskId}
             })
         })
         .catch(err => console.log(err))
 };
 
-export const deleteAnnouncement = (announcementId) => dispatch => {
-    axios.delete(`/announcement/${announcementId}`)
+export const deleteTask = (taskId) => dispatch => {
+    axios.delete(`/task/${taskId}`)
         .then(() => {
             dispatch({
-                type: DELETE_ANNOUNCEMENT, payload: announcementId
+                type: DELETE_TASK, payload: taskId
             })
         })
         .catch(err => console.log(err));
 };
 
-export const archiveAnnouncement = (announcementId) => dispatch => {
-    axios.post(`/announcement/${announcementId}`, { isArchived: true })
+export const archiveTask = (taskId) => dispatch => {
+    axios.post(`/task/${taskId}`, { isArchived: true })
         .then(() => {
-            dispatch(getAnnouncements());
+            dispatch(getTasks());
         })
         .catch(err => {
             dispatch({
@@ -128,10 +128,10 @@ export const archiveAnnouncement = (announcementId) => dispatch => {
         });
 };
 
-export const pinAnnouncement = (announcementId, pinToTop) => dispatch => {
-    axios.post(`/announcement/${announcementId}`, { pinToTop })
+export const pinTask = (taskId, pinToTop) => dispatch => {
+    axios.post(`/task/${taskId}`, { pinToTop })
         .then(() => {
-            dispatch(getAnnouncements());
+            dispatch(getTasks());
         })
         .catch(err => {
             dispatch({
@@ -141,8 +141,8 @@ export const pinAnnouncement = (announcementId, pinToTop) => dispatch => {
         });
 };
 
-export const submitComment = (announcementId, commentData) => dispatch => {
-    axios.post(`/announcement/${announcementId}/comment`, commentData)
+export const submitComment = (taskId, commentData) => dispatch => {
+    axios.post(`/task/${taskId}/comment`, commentData)
         .then(res => {
             dispatch({
                 type: SUBMIT_COMMENT,
@@ -163,14 +163,14 @@ export const getUserData = (userHandle) => dispatch => {
     axios.get(`/user/${userHandle}`)
         .then((res) => {
             dispatch({
-                type: SET_ANNOUNCEMENTS,
-                payload: res.data.announcements
+                type: SET_TASKS,
+                payload: res.data.tasks
             })
         })
         .catch(() => {
             dispatch({
-                type: SET_ANNOUNCEMENTS,
-                payload: null
+                type: SET_TASKS,
+                payload: []
             });
         });
 };
@@ -179,9 +179,9 @@ export const clearErrors = () => dispatch => {
     dispatch({ type: CLEAR_ERRORS })
 };
 
-export const uploadImageForPost = (announcementId, formData) => (dispatch) => {
+export const uploadImageForPost = (taskId, formData) => (dispatch) => {
     dispatch({ type: LOADING_USER });
-    axios.post(`/announcement/${announcementId}/image`, formData)
+    axios.post(`/task/${taskId}/image`, formData)
         .then(res => {
             dispatch({
                 type: APPEND_IMAGEURL_TO_ANNOUNCEMENT,

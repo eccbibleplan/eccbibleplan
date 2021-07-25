@@ -3,7 +3,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import PropTypes from 'prop-types';
 
 import { connect } from "react-redux";
-import { deleteAnnouncement } from "../../redux/actions/dataActions";
+import { archiveTask } from "../../redux/actions/dataActions";
 import MyButton from "../../util/MyButton";
 
 // MUI
@@ -11,13 +11,13 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogActions from "@material-ui/core/DialogActions";
-import DeleteOutline from "@material-ui/icons/DeleteOutline";
+import ArchiveOutline from '@material-ui/icons/ArchiveOutlined';
 
 const styles = {
 
 };
 
-class DeleteAnnouncement extends Component {
+class ArchiveButton extends Component {
     state = {
         open: false
     };
@@ -30,8 +30,8 @@ class DeleteAnnouncement extends Component {
         this.setState({ open: false })
     };
 
-    deleteAnnouncement = () => {
-        this.props.deleteAnnouncement(this.props.announcementId);
+    archiveAnnouncement = () => {
+        this.props.archiveAnnouncement(this.props.announcementId);
         this.handleClose();
     };
 
@@ -40,11 +40,11 @@ class DeleteAnnouncement extends Component {
 
         return (
             <Fragment>
-                <MyButton tip="Delete Announcement"
+                <MyButton tip="Archive Task"
                           onClick={this.handleOpen}
-                          btnClassName={classes.deleteButton}
+                          btnClassName={classes.archiveButton}
                 >
-                    <DeleteOutline color="primary"/>
+                    <ArchiveOutline color="primary"/>
                 </MyButton>
                 <Dialog
                     open={this.state.open}
@@ -53,14 +53,14 @@ class DeleteAnnouncement extends Component {
                     maxWidth="sm"
                     >
                     <DialogTitle>
-                        Are you sure you want to delete this announcement?
+                        Are you sure you want to archive this announcement?
                     </DialogTitle>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
                             Cancel
                         </Button>
-                        <Button onClick={this.deleteAnnouncement} color="secondary">
-                            Delete
+                        <Button onClick={this.archiveAnnouncement} color="secondary">
+                            Archive
                         </Button>
                     </DialogActions>
                 </Dialog>
@@ -69,10 +69,10 @@ class DeleteAnnouncement extends Component {
     }
 }
 
-DeleteAnnouncement.propTypes = {
-    deleteAnnouncement: PropTypes.func.isRequired,
+ArchiveButton.propTypes = {
+    archiveAnnouncement: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
     announcementId: PropTypes.string.isRequired
 };
 
-export default connect(null, { deleteAnnouncement })(withStyles(styles)(DeleteAnnouncement));
+export default connect(null, { archiveAnnouncement: archiveTask })(withStyles(styles)(ArchiveButton));

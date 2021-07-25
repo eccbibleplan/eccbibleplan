@@ -16,6 +16,7 @@ const reducers = combineReducers({
     UI: uiReducer
 });
 
-const store = createStore(reducers, initialState, compose(applyMiddleware(...middleware)));
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducers, /* preloadedState, */initialState, composeEnhancers(applyMiddleware(...middleware)));
 
 export default store;

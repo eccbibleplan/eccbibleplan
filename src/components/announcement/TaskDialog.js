@@ -16,7 +16,7 @@ import Typography from "@material-ui/core/Typography";
 import CloseIcon from "@material-ui/icons/Close";
 
 import MyButton from "../../util/MyButton";
-import { getAnnouncement, clearErrors } from "../../redux/actions/dataActions";
+import { getTask, clearErrors } from "../../redux/actions/dataActions";
 import ChatIcon from "@material-ui/icons/Chat";
 import Comments from "./Comments";
 import ReactMarkdown from "react-markdown";
@@ -51,7 +51,7 @@ const styles = (theme) => ({
     }
 });
 
-class AnnouncementDialog extends Component {
+class TaskDialog extends Component {
     state = {
         open: false
     };
@@ -64,7 +64,7 @@ class AnnouncementDialog extends Component {
 
     handleOpen = () => {
         this.setState({ open: true});
-        this.props.getAnnouncement(this.props.announcementId);
+        this.props.getTask(this.props.announcementId);
     };
 
     handleClose = () => {
@@ -76,12 +76,12 @@ class AnnouncementDialog extends Component {
     render() {
         const {
             classes,
-            announcement : {
+            task : {
                 body,
                 createdAt,
                 userImage,
                 userHandle,
-                announcementId,
+                taskId,
                 commentCount,
                 comments
             },
@@ -124,7 +124,7 @@ class AnnouncementDialog extends Component {
                     <span>{commentCount} comments</span>
                 </Container>
                 <hr className={classes.visibleSeparator} />
-                <CommentForm announcementId={announcementId}/>
+                <CommentForm announcementId={taskId}/>
                 <Comments comments={comments} />
             </Grid>
         );
@@ -147,18 +147,18 @@ class AnnouncementDialog extends Component {
     }
 }
 
-AnnouncementDialog.propTypes = {
-    getAnnouncement: PropTypes.func.isRequired,
+TaskDialog.propTypes = {
+    getTask: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired,
-    announcementId: PropTypes.string.isRequired,
+    taskId: PropTypes.string.isRequired,
     userHandle: PropTypes.string.isRequired,
-    announcement: PropTypes.object.isRequired,
+    task: PropTypes.object.isRequired,
     UI: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    announcement: state.data.announcement,
+    task: state.data.task,
     UI: state.UI
 });
 
-export default connect(mapStateToProps, { getAnnouncement, clearErrors })(withStyles(styles)(AnnouncementDialog));
+export default connect(mapStateToProps, { getTask: getTask, clearErrors })(withStyles(styles)(TaskDialog));

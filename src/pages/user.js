@@ -5,23 +5,23 @@ import Grid from '@material-ui/core/Grid';
 import { connect } from 'react-redux';
 import { getUserData } from "../redux/actions/dataActions";
 import axios from "axios";
-import Announcement from "../components/announcement/Announcement";
-import AnnouncementSkeleton from "../util/AnnouncementSkeleton";
+import Task from "../components/announcement/Task";
+import TaskSkeleton from "../util/TaskSkeleton";
 import ProfileSkeleton from "../util/ProfileSkeleton";
 import Profile from "../components/profile/Profile";
 
 class user extends Component {
     state = {
         profile: {},
-        announcementIdParam: null
+        taskIdParam: null
     };
 
     componentDidMount() {
         const handle = this.props.match.params.handle;
-        const announcementId = this.props.match.params.announcementId;
+        const taskId = this.props.match.params.taskId;
 
-        if (announcementId) {
-            this.setState({ announcementIdParam: announcementId})
+        if (taskId) {
+            this.setState({ taskIdParam: taskId})
         }
         this.props.getUserData(handle);
         axios.get(`/user/${handle}`)
@@ -34,21 +34,21 @@ class user extends Component {
     }
 
     render() {
-        const { announcements, loading } = this.props.data;
-        const { announcementIdParam } = this.state;
+        const { tasks, loading } = this.props.data;
+        const { taskIdParam } = this.state;
 
-        const announcementsMarkup = loading ? (
-            <AnnouncementSkeleton />
-            ) : announcements === null ? (
-                <p>No announcements from this user</p>
-            ) : !announcementIdParam ? (
-                announcements.map(ann => <Announcement key={ann.announcementId} announcement={ann} />)
+        const tasksMarkup = loading ? (
+            <TaskSkeleton />
+            ) : tasks === null ? (
+                <p>No tasks from this user</p>
+            ) : !taskIdParam ? (
+                tasks.map(ann => <Task key={ann.taskId} task={ann} />)
             ) : (
-                announcements.map(ann => {
-                    if (ann.announcementId !== announcementIdParam) {
-                        return <Announcement key={ann.announcementId} announcement={ann} />;
+                tasks.map(ann => {
+                    if (ann.taskId !== taskIdParam) {
+                        return <Task key={ann.taskId} task={ann} />;
                     } else {
-                        return <Announcement key={ann.announcementId} announcement={ann} openDialog={true} />;
+                        return <Task key={ann.taskId} task={ann} openDialog={true} />;
                     }
 
                 })
@@ -56,7 +56,7 @@ class user extends Component {
         return (
             <Grid container spacing={10}>
                 <Grid item sm={8} xs={12}>
-                    {announcementsMarkup}
+                    {tasksMarkup}
                 </Grid>
                 <Grid item sm={4} xs={12}>
                     {!this.state.profile ? (

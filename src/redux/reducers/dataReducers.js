@@ -1,17 +1,17 @@
 import {
-    SET_ANNOUNCEMENTS,
-    LIKE_ANNOUNCEMENT,
-    UNLIKE_ANNOUNCEMENT,
+    SET_TASKS,
+    COMPLETE_TASK,
+    UNDO_COMPLETE_TASK,
     LOADING_DATA,
-    DELETE_ANNOUNCEMENT,
-    POST_ANNOUNCEMENT,
-    SET_ANNOUNCEMENT,
+    DELETE_TASK,
+    POST_TASK,
+    SET_TASK,
     SUBMIT_COMMENT, APPEND_IMAGEURL_TO_ANNOUNCEMENT
 } from "../types";
 
 const initialState = {
-    announcements: [],
-    announcement: {},
+    tasks: [],
+    task: {},
     loading: false
 };
 
@@ -22,67 +22,67 @@ const reducers = function(state = initialState, action) {
                 ...state,
                 loading: true
             };
-        case SET_ANNOUNCEMENTS:
+        case SET_TASKS:
             const topItems = action.payload.filter(e => !!e.pinToTop);
             const regularItems = action.payload.filter(e => !e.pinToTop);
 
             return {
                 ...state,
-                announcements: [
+                tasks: [
                     ...topItems,
                     ...regularItems
                 ],
                 loading: false
             };
-        case SET_ANNOUNCEMENT:
+        case SET_TASK:
             return {
                 ...state,
-                announcement: action.payload
+                task: action.payload
             };
         case APPEND_IMAGEURL_TO_ANNOUNCEMENT:
             return {
                 ...state,
-                announcement: {
-                    ...state.announcement,
-                    body: `${state.announcement.body}\n\n![](${action.payload})`
+                task: {
+                    ...state.task,
+                    body: `${state.task.body}\n\n![](${action.payload})`
                 }
             };
-        case LIKE_ANNOUNCEMENT:
-        case UNLIKE_ANNOUNCEMENT:
-            let index = state.announcements
-                .findIndex((ann) => ann.announcementId === action.payload.announcementId);
-            state.announcements[index] = action.payload;
-            if(state.announcement.announcementId === action.payload.announcementId) {
-                state.announcement = {
-                    ...state.announcement,
+        case COMPLETE_TASK:
+        case UNDO_COMPLETE_TASK:
+            let index = state.tasks
+                .findIndex((ann) => ann.taskId === action.payload.taskId);
+            state.tasks[index] = action.payload;
+            if(state.task.taskId === action.payload.taskId) {
+                state.task = {
+                    ...state.task,
                     ...action.payload
                 }
             }
             return {
                 ...state
             };
-        case DELETE_ANNOUNCEMENT:
-            let deleteIdx = state.announcements.findIndex(ann => ann.announcementId === action.payload);
-            state.announcements.splice(deleteIdx, 1);
+        case DELETE_TASK:
+            let deleteIdx = state.tasks.findIndex(ann => ann.taskId === action.payload);
+            state.tasks.splice(deleteIdx, 1);
             return {
                 ...state
             };
-        case POST_ANNOUNCEMENT:
+        case POST_TASK:
             return {
                 ...state,
-                announcements: [
+                tasks: [
                     action.payload,
-                    ...state.announcements
+                    ...state.tasks
                 ]
             };
         case SUBMIT_COMMENT:
             return {
                 ...state,
-                announcement: {
-                    ...state.announcement,
+                task: {
+                    ...state.task,
                     comments: [
                         action.payload,
-                        ...state.announcement.comments
+                        ...state.task.comments
                     ]
                 }
             };
