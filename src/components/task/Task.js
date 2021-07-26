@@ -7,6 +7,8 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import clsx from 'clsx';
 import EditTask from "./EditTask";
 import DeleteTask from "./DeleteTask";
+import ContentIFrame from "../../util/ContentIFrame";
+
 // Redux
 import { connect } from "react-redux";
 // MUI
@@ -115,6 +117,17 @@ class Task extends Component {
             {userHandle}
         </Typography>);
 
+        let contentMarkup = (
+            <ReactMarkdown
+                source={markdownTextPreProcess(body)}
+                className={classes.markdownContainer}
+            />
+        );
+        if (body.startsWith("url:")) {
+            const url = body.substring(4).trim();
+            contentMarkup = (<ContentIFrame src={url}/>);
+        }
+
         return (
             <Card className={clsx(classes.card, {[classes.cardPinToTop]: pinToTop})}>
                 <CardHeader
@@ -135,10 +148,7 @@ class Task extends Component {
                         <Typography
                             id={"content-" + taskId}
                         >
-                            <ReactMarkdown
-                                source={markdownTextPreProcess(body)}
-                                className={classes.markdownContainer}
-                            />
+                            {contentMarkup}
                         </Typography>
                     </CardContent>
 
