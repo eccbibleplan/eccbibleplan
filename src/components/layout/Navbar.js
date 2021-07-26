@@ -9,7 +9,7 @@ import PropTyes from "prop-types";
 import withStyles from "@material-ui/core/styles/withStyles";
 import MyButton from "../../util/MyButton";
 import HomeIcon from "@material-ui/icons/Home";
-import PostAnnouncement from "../announcement/PostTask";
+import PostAnnouncement from "../task/PostTask";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const styles = {};

@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react'
-import Task from '../components/announcement/Task';
+import Task from '../components/task/Task';
 import PropTypes from "prop-types";
 
 import { connect } from "react-redux";

@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import { connect } from 'react-redux';
 import { getUserData } from "../redux/actions/dataActions";
 import axios from "axios";
-import Task from "../components/announcement/Task";
+import Task from "../components/task/Task";
 import TaskSkeleton from "../util/TaskSkeleton";
 import ProfileSkeleton from "../util/ProfileSkeleton";
 import Profile from "../components/profile/Profile";
