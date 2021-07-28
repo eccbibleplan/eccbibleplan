@@ -13,9 +13,9 @@ class ShareButton extends Component {
         const { taskId, content } = this.props;
 
         const shareData = {
-            title: 'H2 App',
+            title: 'ECC Bible',
             text: content,
-            url: `${process.env.PUBLIC_URL}?taskId=${taskId}`
+            url: `${process.env.PUBLIC_URL}#/task/${taskId}`
         };
 
         try {

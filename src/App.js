@@ -57,10 +57,11 @@ function App() {
                   <div className="container">
                       <Switch>
                           <Route exact path="/" component={home} />
+                          <Route exact path="/task/:taskId" component={home} />
                           <AuthRoute exact path="/login" component={login}/>
                           <AuthRoute exact path="/signup" component={signup}/>
                           <Route exact path="/users/:handle" component={user}/>
-                          <Route exact path="/users/:handle/announcement/:announcementId" component={user}/>
+                          <Route exact path="/users/:handle/task/:taskId" component={user}/>
                           <Route exact path="/cal" component={calendar} />
                       </Switch>
                   </div>

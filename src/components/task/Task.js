@@ -98,8 +98,35 @@ class Task extends Component {
         const pinButton = authenticated && userHandle === handle ? (
             <PinAnnouncement taskId={taskId} pinToTop={pinToTop} />
         ) : null;
-        const shareButton = <ShareButton taskId={taskId} content={body}/>;
         const completeButton = <CompleteButton taskId={taskId} user={this.props.user}/>;
+        const userLink = (<Typography
+            component={Link}
+            to={`/users/${userHandle}`}
+            color="primary"
+        >
+            {userHandle}
+        </Typography>);
+
+        let contentMarkup
+        let textOnlyContent
+        if (body.startsWith("/url")) {
+            const url = body.substring(4).trim();
+            textOnlyContent = url;
+            contentMarkup = (<IFrameContent src={url}/>);
+        } else if (body.startsWith("/html")) {
+            const htmlContent = body.substring(5).trim();
+            contentMarkup = (<HtmlContent html={htmlContent}/>);
+            textOnlyContent = htmlContent.replaceAll(/<[^>]*>/g, "");
+        } else {
+            contentMarkup = (
+                <ReactMarkdown
+                    source={markdownTextPreProcess(body)}
+                    className={classes.markdownContainer}
+                />
+            );
+            textOnlyContent = body;
+        }
+        const shareButton = <ShareButton taskId={taskId} content={textOnlyContent}/>;
         const actionsMarkup = (
             <ButtonGroup classes={classes.buttonGroup}>
                 {shareButton}
@@ -110,28 +137,6 @@ class Task extends Component {
                 {completeButton}
             </ButtonGroup>
         );
-        const userLink = (<Typography
-            component={Link}
-            to={`/users/${userHandle}`}
-            color="primary"
-        >
-            {userHandle}
-        </Typography>);
-
-        let contentMarkup
-        if (body.startsWith("/url")) {
-            const url = body.substring(4).trim();
-            contentMarkup = (<IFrameContent src={url}/>);
-        } else if (body.startsWith("/html")) {
-            contentMarkup = (<HtmlContent html={body.substring(5).trim()}/>)
-        } else {
-            contentMarkup = (
-                <ReactMarkdown
-                    source={markdownTextPreProcess(body)}
-                    className={classes.markdownContainer}
-                />
-            );
-        }
 
         return (
             <Card className={clsx(classes.card, {[classes.cardPinToTop]: pinToTop})}>

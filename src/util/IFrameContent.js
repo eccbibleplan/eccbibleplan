@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ReplaySharpIcon from '@material-ui/icons/ReplaySharp';
 import KeyboardReturnIcon from '@material-ui/icons/KeyboardReturn';
 import Tooltip from "@material-ui/core/Tooltip";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -37,7 +38,7 @@ const IFrameContent = ({ src }) => {
     }
     return (
         <Fragment>
-            <a href='' onClick={handleOpen}>{src}</a>
+            <Button onClick={handleOpen}>{src}</Button>
             <Dialog fullScreen open={isOpen} onClose={handleClose}>
                 <AppBar className={classes.appBar}>
                     <Toolbar>
@@ -60,6 +61,7 @@ const IFrameContent = ({ src }) => {
                         width="100%"
                         height="100%"
                         id={src}
+                        title={src}
                     >
                     </iframe>
             </Dialog>

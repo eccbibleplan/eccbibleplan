@@ -9,8 +9,6 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-const queryString = require('query-string');
-
 class home extends Component {
     state = {
         taskId: null,
@@ -26,8 +24,8 @@ class home extends Component {
 
     componentDidMount() {
         this.props.getTasks();
-        const queryParams = queryString.parse(this.props.location.search);
-        const taskId = queryParams.taskId;
+        const taskId = this.props.match.params.taskId;
+        console.log(taskId)
         if (taskId) {
             this.setState({ taskId: taskId})
         }
@@ -52,11 +50,17 @@ class home extends Component {
                     />
                 </FormGroup>
                 {
-                    tasks
-                        .filter(t => !t.isArchived && (showCompleted || !this.taskCompleted(t.taskId)))
-                        .map(t => taskId && t.taskId === taskId ?
-                            (<Task key={t.taskId} task={t} openDialog={true}/>) :
-                            (<Task key={t.taskId} task={t}/>))
+                    taskId ? (
+                        tasks
+                            .filter(t => t.taskId === taskId)
+                            .map(t => (<Task key={t.taskId} task={t}/>))
+                    ) : (
+                        tasks
+                            .filter(t => !t.isArchived && (showCompleted || !this.taskCompleted(t.taskId)))
+                            .map(t => taskId && t.taskId === taskId ?
+                                (<Task key={t.taskId} task={t} openDialog={true}/>) :
+                                (<Task key={t.taskId} task={t}/>))
+                    )
                 }
             </Fragment>
             ) : <TaskSkeleton />;
