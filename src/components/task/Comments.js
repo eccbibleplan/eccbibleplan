@@ -69,7 +69,7 @@ Comments.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    announcement: state.data.announcement,
+    task: state.data.task,
     UI: state.UI
 });
 

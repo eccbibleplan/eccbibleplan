@@ -31,7 +31,7 @@ class DeleteTask extends Component {
     };
 
     deleteAnnouncement = () => {
-        this.props.deleteAnnouncement(this.props.announcementId);
+        this.props.deleteAnnouncement(this.props.taskId);
         this.handleClose();
     };
 
@@ -59,7 +59,7 @@ class DeleteTask extends Component {
                         <Button onClick={this.handleClose} color="primary">
                             Cancel
                         </Button>
-                        <Button onClick={this.deleteAnnouncement} color="secondary">
+                        <Button onClick={this.deleteTask} color="secondary">
                             Delete
                         </Button>
                     </DialogActions>
@@ -70,9 +70,9 @@ class DeleteTask extends Component {
 }
 
 DeleteTask.propTypes = {
-    deleteAnnouncement: PropTypes.func.isRequired,
+    deleteTask: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-    announcementId: PropTypes.string.isRequired
+    taskId: PropTypes.string.isRequired
 };
 
-export default connect(null, { deleteAnnouncement: deleteTask })(withStyles(styles)(DeleteTask));
+export default connect(null, { deleteTask: deleteTask })(withStyles(styles)(DeleteTask));

@@ -64,7 +64,7 @@ class TaskDialog extends Component {
 
     handleOpen = () => {
         this.setState({ open: true});
-        this.props.getTask(this.props.announcementId);
+        this.props.getTask(this.props.taskId);
     };
 
     handleClose = () => {
@@ -124,7 +124,7 @@ class TaskDialog extends Component {
                     <span>{commentCount} comments</span>
                 </Container>
                 <hr className={classes.visibleSeparator} />
-                <CommentForm announcementId={taskId}/>
+                <CommentForm taskId={taskId}/>
                 <Comments comments={comments} />
             </Grid>
         );

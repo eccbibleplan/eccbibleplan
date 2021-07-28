@@ -10,12 +10,12 @@ const styles = (theme) => ({
 
 class ShareButton extends Component {
     handleShare = () => {
-        const { announcementId, content } = this.props;
+        const { taskId, content } = this.props;
 
         const shareData = {
             title: 'H2 App',
             text: content,
-            url: `${process.env.PUBLIC_URL}?announcementId=${announcementId}`
+            url: `${process.env.PUBLIC_URL}?taskId=${taskId}`
         };
 
         try {
@@ -39,7 +39,7 @@ class ShareButton extends Component {
 
         return this.canShare() ? (
             <div>
-                <MyButton onClick={this.handleShare} tip="Share announcement" tipClassName={classes.expandButton}>
+                <MyButton onClick={this.handleShare} tip="Share task" tipClassName={classes.expandButton}>
                     <ShareIcon color="primary" />
                 </MyButton>
             </div>) : null;

@@ -16,8 +16,8 @@ class PinTask extends Component {
     };
 
     togglePinToTop = () => {
-        const { announcementId, pinToTop } = this.props;
-        this.props.pinAnnouncement(announcementId, !pinToTop);
+        const { taskId, pinToTop } = this.props;
+        this.props.pinTask(taskId, !pinToTop);
     };
 
     render() {
@@ -38,9 +38,9 @@ class PinTask extends Component {
 }
 
 PinTask.propTypes = {
-    pinAnnouncement: PropTypes.func.isRequired,
+    pinTask: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-    announcementId: PropTypes.string.isRequired
+    taskId: PropTypes.string.isRequired
 };
 
-export default connect(null, { pinAnnouncement: pinTask })(withStyles(styles)(PinTask));
+export default connect(null, { pinTask: pinTask })(withStyles(styles)(PinTask));

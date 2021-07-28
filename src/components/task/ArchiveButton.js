@@ -30,8 +30,8 @@ class ArchiveButton extends Component {
         this.setState({ open: false })
     };
 
-    archiveAnnouncement = () => {
-        this.props.archiveAnnouncement(this.props.announcementId);
+    archiveTask = () => {
+        this.props.archiveTask(this.props.taskId);
         this.handleClose();
     };
 
@@ -53,13 +53,13 @@ class ArchiveButton extends Component {
                     maxWidth="sm"
                     >
                     <DialogTitle>
-                        Are you sure you want to archive this announcement?
+                        Are you sure you want to archive this task?
                     </DialogTitle>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
                             Cancel
                         </Button>
-                        <Button onClick={this.archiveAnnouncement} color="secondary">
+                        <Button onClick={this.archiveTask} color="secondary">
                             Archive
                         </Button>
                     </DialogActions>
@@ -70,9 +70,9 @@ class ArchiveButton extends Component {
 }
 
 ArchiveButton.propTypes = {
-    archiveAnnouncement: PropTypes.func.isRequired,
+    archiveTask: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-    announcementId: PropTypes.string.isRequired
+    taskId: PropTypes.string.isRequired
 };
 
-export default connect(null, { archiveAnnouncement: archiveTask })(withStyles(styles)(ArchiveButton));
+export default connect(null, { archiveTask: archiveTask })(withStyles(styles)(ArchiveButton));

@@ -7,7 +7,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import clsx from 'clsx';
 import EditTask from "./EditTask";
 import DeleteTask from "./DeleteTask";
-import ContentIFrame from "../../util/ContentIFrame";
+import IFrameContent from "../../util/IFrameContent";
 
 // Redux
 import { connect } from "react-redux";
@@ -28,6 +28,7 @@ import ShareButton from "./ShareButton";
 import TaskDialog from "./TaskDialog";
 import PinAnnouncement from "./PinTask";
 import CompleteButton from "./CompleteButton";
+import HtmlContent from "../../util/HtmlContent";
 
 const styles = (theme) => ({
     card: {
@@ -117,15 +118,19 @@ class Task extends Component {
             {userHandle}
         </Typography>);
 
-        let contentMarkup = (
-            <ReactMarkdown
-                source={markdownTextPreProcess(body)}
-                className={classes.markdownContainer}
-            />
-        );
-        if (body.startsWith("url:")) {
+        let contentMarkup
+        if (body.startsWith("/url")) {
             const url = body.substring(4).trim();
-            contentMarkup = (<ContentIFrame src={url}/>);
+            contentMarkup = (<IFrameContent src={url}/>);
+        } else if (body.startsWith("/html")) {
+            contentMarkup = (<HtmlContent html={body.substring(5).trim()}/>)
+        } else {
+            contentMarkup = (
+                <ReactMarkdown
+                    source={markdownTextPreProcess(body)}
+                    className={classes.markdownContainer}
+                />
+            );
         }
 
         return (
@@ -142,15 +147,13 @@ class Task extends Component {
                     title={userLink}
                     subheader={dayjs(createdAt).fromNow()}
                 />
-
-
-                    <CardContent className={classes.content}>
-                        <Typography
-                            id={"content-" + taskId}
-                        >
-                            {contentMarkup}
-                        </Typography>
-                    </CardContent>
+                <CardContent className={classes.content}>
+                    <Typography
+                        id={"content-" + taskId}
+                    >
+                        {contentMarkup}
+                    </Typography>
+                </CardContent>
 
                 <CardActions className={classes.actions}>
                     {actionsMarkup}

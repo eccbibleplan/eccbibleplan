@@ -38,7 +38,7 @@ class CommentForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.props.submitComment(this.props.announcementId, {body: this.state.body})
+        this.props.submitComment(this.props.taskId, {body: this.state.body})
     };
 
     render() {
@@ -51,7 +51,7 @@ class CommentForm extends Component {
                     <TextField
                         name="body"
                         type="text"
-                        label="Comment on announcement"
+                        label="Comment on task"
                         error={errors.error ? true : false}
                         helperText={errors.error}
                         value={this.state.body}
@@ -78,7 +78,7 @@ class CommentForm extends Component {
 CommentForm.propTypes = {
     submitComment: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-    announcementId: PropTypes.string.isRequired,
+    taskId: PropTypes.string.isRequired,
     UI: PropTypes.object.isRequired,
     authenticated: PropTypes.bool.isRequired
 };
