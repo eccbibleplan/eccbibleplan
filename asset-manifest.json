@@ -1,24 +1,24 @@
 {
   "files": {
     "main.css": "/eccbibleplan/static/css/main.424d3638.chunk.css",
-    "main.js": "/eccbibleplan/static/js/main.0a050bff.chunk.js",
-    "main.js.map": "/eccbibleplan/static/js/main.0a050bff.chunk.js.map",
+    "main.js": "/eccbibleplan/static/js/main.049e87db.chunk.js",
+    "main.js.map": "/eccbibleplan/static/js/main.049e87db.chunk.js.map",
     "runtime-main.js": "/eccbibleplan/static/js/runtime-main.8e52ab3b.js",
     "runtime-main.js.map": "/eccbibleplan/static/js/runtime-main.8e52ab3b.js.map",
     "static/css/2.78e6a248.chunk.css": "/eccbibleplan/static/css/2.78e6a248.chunk.css",
-    "static/js/2.f6659c9d.chunk.js": "/eccbibleplan/static/js/2.f6659c9d.chunk.js",
-    "static/js/2.f6659c9d.chunk.js.map": "/eccbibleplan/static/js/2.f6659c9d.chunk.js.map",
+    "static/js/2.cd349224.chunk.js": "/eccbibleplan/static/js/2.cd349224.chunk.js",
+    "static/js/2.cd349224.chunk.js.map": "/eccbibleplan/static/js/2.cd349224.chunk.js.map",
     "index.html": "/eccbibleplan/index.html",
     "static/css/2.78e6a248.chunk.css.map": "/eccbibleplan/static/css/2.78e6a248.chunk.css.map",
     "static/css/main.424d3638.chunk.css.map": "/eccbibleplan/static/css/main.424d3638.chunk.css.map",
-    "static/js/2.f6659c9d.chunk.js.LICENSE.txt": "/eccbibleplan/static/js/2.f6659c9d.chunk.js.LICENSE.txt",
+    "static/js/2.cd349224.chunk.js.LICENSE.txt": "/eccbibleplan/static/js/2.cd349224.chunk.js.LICENSE.txt",
     "static/media/no-img.c3f94521.png": "/eccbibleplan/static/media/no-img.c3f94521.png"
   },
   "entrypoints": [
     "static/js/runtime-main.8e52ab3b.js",
     "static/css/2.78e6a248.chunk.css",
-    "static/js/2.f6659c9d.chunk.js",
+    "static/js/2.cd349224.chunk.js",
     "static/css/main.424d3638.chunk.css",
-    "static/js/main.0a050bff.chunk.js"
+    "static/js/main.049e87db.chunk.js"
   ]
 }
